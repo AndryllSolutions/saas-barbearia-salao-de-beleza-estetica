@@ -88,6 +88,3 @@ yaml
 Copiar código
 
 ---
-
-👉 Quer que eu já prepare também o `requirements.txt` com as libs principais (`django`, `python-dotenv`, etc.) pra subir junto?
-
