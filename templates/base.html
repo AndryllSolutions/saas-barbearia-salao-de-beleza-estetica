@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema de Agendamento</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Início</a> | {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}">Login</a> |
+        <a href="/accounts/register/">Registrar</a> | {% else %}
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">Sair</button>
+        </form>
+        {% endif %}
+
+        <a href="/admin/">Admin</a>
+      </nav>
+
+      {% if user.is_authenticated %}
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        {% if user.is_admin %}
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        {% if user.is_admin or user.is_funcionario %}
+          <li><a href="{% url 'novo_agendamento' %}">Novo Agendamento</a></li>
+        {% endif %}
+
+        {% endif %} {% if user.is_cliente %}
+        <li><a href="{% url 'meus_agendamentos' %}">Meus Agendamentos</a></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+      <hr />
+    </header>
+
+    <main>{% block content %} {% endblock %}</main>
+
+    <footer>
+      <hr />
+      <p>&copy; {{ year|default:"2025" }} - Meu SaaS</p>
+    </footer>
+  </body>
+</html>

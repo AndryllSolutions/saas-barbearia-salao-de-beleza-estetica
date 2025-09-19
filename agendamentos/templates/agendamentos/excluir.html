@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Excluir Agendamento</h2>
+
+<p>Tem certeza que deseja excluir este agendamento?</p>
+
+<ul>
+    <li><b>Cliente:</b> {{ agendamento.cliente.nome }}</li>
+    <li><b>Serviço:</b> {{ agendamento.servico.nome }}</li>
+    <li><b>Data:</b> {{ agendamento.data }}</li>
+    <li><b>Hora:</b> {{ agendamento.hora }}</li>
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">✅ Confirmar exclusão</button>
+    <a href="{% url 'home' %}">❌ Cancelar</a>
+</form>
+{% endblock %}

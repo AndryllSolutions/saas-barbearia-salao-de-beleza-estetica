@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Meus Agendamentos</h2>
+
+  {% if agendamentos %}
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>Serviço</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Criado em</th>
+      </tr>
+      {% for ag in agendamentos %}
+      <tr>
+        <td>{{ ag.servico.nome }}</td>
+        <td>{{ ag.data }}</td>
+        <td>{{ ag.hora }}</td>
+        <td>{{ ag.criado_em|date:"d/m/Y H:i" }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Você ainda não possui agendamentos.</p>
+  {% endif %}
+{% endblock %}

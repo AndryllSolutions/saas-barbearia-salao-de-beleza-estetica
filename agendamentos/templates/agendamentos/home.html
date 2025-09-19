@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Agendamentos</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Cliente</th>
+        <th>Telefone</th>
+        <th>Serviço</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Status</th>
+        <th>Criado por</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for ag in agendamentos %}
+    <tr>
+        <td>{{ ag.cliente.nome }}</td>
+        <td>{{ ag.cliente.telefone }}</td>
+        <td>{{ ag.servico.nome }}</td>
+        <td>{{ ag.data }}</td>
+        <td>{{ ag.hora }}</td>
+        <td>{{ ag.get_status_display }}</td>
+        <td>{{ ag.usuario.username }}</td>
+
+        <td>
+            {% if user.is_authenticated %}
+                {% if user.is_admin or user.is_funcionario %}
+                    <!-- Admin e Funcionário: podem editar e excluir -->
+                    <a href="{% url 'editar_agendamento' ag.id %}">Editar</a> |
+                    <a href="{% url 'excluir_agendamento' ag.id %}">Excluir</a>
+                {% elif user.is_cliente and ag.usuario == user %}
+                    <!-- Cliente: só pode editar os próprios -->
+                    <a href="{% url 'editar_agendamento' ag.id %}">Editar</a>
+                {% endif %}
+            {% else %}
+                <em>Sem ações</em>
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="8">Nenhum agendamento encontrado.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

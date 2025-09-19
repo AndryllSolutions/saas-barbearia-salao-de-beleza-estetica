@@ -1,0 +1,44 @@
+<form method="post">
+  {% csrf_token %}
+  <label>Nome do Cliente:</label>
+  <input type="text" name="nome" value="{{ agendamento.cliente.nome }}"><br>
+
+  <label>Telefone:</label>
+  <input type="text" name="telefone" value="{{ agendamento.cliente.telefone }}"><br>
+
+  <label>Serviço:</label>
+  <select name="servico">
+    {% for servico in servicos %}
+      <option value="{{ servico.id }}" {% if servico.id == agendamento.servico.id %}selected{% endif %}>
+        {{ servico.nome }}
+      </option>
+    {% endfor %}
+  </select><br>
+
+  <label>Data:</label>
+  <input type="date" name="data" value="{{ agendamento.data }}"><br>
+
+  <label>Hora:</label>
+  <input type="time" name="hora" value="{{ agendamento.hora }}"><br>
+
+  <!-- 🔥 Campo status -->
+  {% if user.is_admin %}
+    <label>Status:</label>
+    <select name="status">
+      <option value="pendente" {% if agendamento.status == "pendente" %}selected{% endif %}>Pendente</option>
+      <option value="confirmado" {% if agendamento.status == "confirmado" %}selected{% endif %}>Confirmado</option>
+      <option value="concluido" {% if agendamento.status == "concluido" %}selected{% endif %}>Concluído</option>
+      <option value="cancelado" {% if agendamento.status == "cancelado" %}selected{% endif %}>Cancelado</option>
+    </select><br>
+  {% elif user.is_funcionario %}
+    <label>Status:</label>
+    <select name="status">
+      <option value="confirmado" {% if agendamento.status == "confirmado" %}selected{% endif %}>Confirmado</option>
+      <option value="concluido" {% if agendamento.status == "concluido" %}selected{% endif %}>Concluído</option>
+    </select><br>
+  {% else %}
+    <p><b>Status:</b> {{ agendamento.get_status_display }}</p>
+  {% endif %}
+
+  <button type="submit">Salvar</button>
+</form>

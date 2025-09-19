@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>➕ Novo Agendamento</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  {% if user.is_admin or user.is_funcionario %}
+    <label for="cliente_usuario">Usuário (já registrado):</label>
+    <select name="cliente_usuario" id="cliente_usuario">
+      <option value="">-- Novo Cliente --</option>
+      {% for u in usuarios_clientes %}
+        <option value="{{ u.id }}">{{ u.username }} ({{ u.email }})</option>
+      {% endfor %}
+    </select>
+    <br><br>
+  {% endif %}
+
+  <label for="nome">Nome do Cliente:</label>
+  <input type="text" name="nome" id="nome">
+  <br><br>
+
+  <label for="telefone">Telefone:</label>
+  <input type="text" name="telefone" id="telefone">
+  <br><br>
+
+  <label for="servico">Serviço:</label>
+  <select name="servico" id="servico" required>
+    {% for s in servicos %}
+      <option value="{{ s.id }}">{{ s.nome }}</option>
+    {% endfor %}
+  </select>
+  <br><br>
+
+  <label for="data">Data:</label>
+  <input type="date" name="data" id="data" required>
+  <br><br>
+
+  <label for="hora">Hora:</label>
+  <input type="time" name="hora" id="hora" required>
+  <br><br>
+
+  <button type="submit">Agendar</button>
+</form>
+
+<a href="{% url 'home' %}">⬅ Voltar</a>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>📅 Lista de Agendamentos</h1>
+
+  {% if agendamentos %}
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Serviço</th>
+          <th>Data</th>
+          <th>Hora</th>
+          <th>Usuário</th>
+          <th>Criado em</th>
+          {% if user.is_admin or user.is_funcionario %}
+            <th>Ações</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for agendamento in agendamentos %}
+          <tr>
+            <td>{{ agendamento.cliente.nome }}</td>
+            <td>{{ agendamento.servico.nome }}</td>
+            <td>{{ agendamento.data }}</td>
+            <td>{{ agendamento.hora }}</td>
+            <td>{{ agendamento.usuario.username }}</td>
+            <td>{{ agendamento.criado_em|date:"d/m/Y H:i" }}</td>
+            {% if user.is_admin or user.is_funcionario %}
+              <td>
+                <a href="{% url 'editar_agendamento' agendamento.id %}">Editar</a> |
+                <a href="{% url 'excluir_agendamento' agendamento.id %}">Excluir</a>
+              </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Não há agendamentos cadastrados ainda.</p>
+  {% endif %}
+
+{% endblock %}

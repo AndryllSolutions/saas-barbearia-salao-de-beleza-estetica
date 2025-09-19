@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Meus Agendamentos</h2>
+<form method="get">
+  <label for="status">Filtrar por status:</label>
+  <select name="status" id="status" onchange="this.form.submit()">
+    <option value="">Todos</option>
+    <option value="pendente" {% if status_selecionado == "pendente" %}selected{% endif %}>Pendente</option>
+    <option value="confirmado" {% if status_selecionado == "confirmado" %}selected{% endif %}>Confirmado</option>
+    <option value="concluido" {% if status_selecionado == "concluido" %}selected{% endif %}>Concluído</option>
+    <option value="cancelado" {% if status_selecionado == "cancelado" %}selected{% endif %}>Cancelado</option>
+  </select>
+</form>
+
+  {% if agendamentos %}
+    <table border="1">
+    <tr>
+        <th>Cliente</th>
+        <th>Serviço</th>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Status</th>
+    </tr>
+    {% for ag in agendamentos %}
+    <tr>
+        <td>{{ ag.cliente.nome }}</td>
+        <td>{{ ag.servico.nome }}</td>
+        <td>{{ ag.data }}</td>
+        <td>{{ ag.hora }}</td>
+        <td>{{ ag.get_status_display }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+  {% else %}
+    <p>Você ainda não possui agendamentos.</p>
+  {% endif %}
+{% endblock %}
